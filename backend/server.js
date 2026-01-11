@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -13,6 +14,16 @@ app.use(express.json());
 
 // Routes
 app.use('/employees', require('./routes/employeeRoutes'));
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html'));
+    });
+}
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI)

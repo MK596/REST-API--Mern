@@ -30,6 +30,9 @@ router.post('/add-emp', async (req, res) => {
         await employee.save();
         res.json(employee);
     } catch (err) {
+        if (err.code === 11000) {
+            return res.status(400).json({ msg: 'Email already exists' });
+        }
         console.error(err.message);
         res.status(500).send('Server Error');
     }

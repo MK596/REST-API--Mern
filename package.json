@@ -1,0 +1,16 @@
+{
+    "name": "react-crud-root",
+    "version": "1.0.0",
+    "description": "Root package.json for MERN deployment",
+    "scripts": {
+        "install-backend": "cd backend && npm install",
+        "install-frontend": "cd frontend && npm install",
+        "build-frontend": "cd frontend && npm run build",
+        "install-all": "npm run install-backend && npm run install-frontend",
+        "build": "npm run install-all && npm run build-frontend",
+        "start": "cd backend && node server.js"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
