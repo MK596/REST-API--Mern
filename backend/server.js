@@ -29,8 +29,8 @@ if (process.env.NODE_ENV === 'production') {
     const distPath = path.join(__dirname, '../frontend/dist');
     app.use(express.static(distPath));
 
-    // Express 5 compatible catch-all
-    app.get('/:any*', (req, res) => {
+    // Express 4 standard catch-all
+    app.get('*', (req, res) => {
         res.sendFile(path.join(distPath, 'index.html'));
     });
 }
