@@ -12,16 +12,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Health check route
+app.get('/api/health', (req, res) => {
+    res.json({
+        status: 'UP',
+        db: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+        env: process.env.NODE_ENV
+    });
+});
+
 // Routes
 app.use('/employees', require('./routes/employeeRoutes'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-    // Set static folder
-    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+    const distPath = path.join(__dirname, '../frontend/dist');
+    app.use(express.static(distPath));
 
-    app.get('*all', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../frontend', 'dist', 'index.html'));
+    // Express 5 compatible catch-all
+    app.get('/:any*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
     });
 }
 
